@@ -1,0 +1,1 @@
+schtasks /create /tn "Hourly Code Backup" /tr "C:\Users\Thomas Rea\AppData\Local\Programs\Python\Python36\python.exe C:\Users\Thomas Rea\Documents\Python\my-automatic-backup\backup.py" /sc hourly
