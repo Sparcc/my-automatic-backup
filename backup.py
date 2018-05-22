@@ -20,12 +20,8 @@ for source in backupSources:
     for destination in backupdDestinations:
         destination = destination.strip()
         folderName=re.search('.*(\\\.+)',source).groups()[0][1:-1]
-        #print(folderName)
-        #print('COMMAND IS'+'7za a -mhe=on -p{p} {fn}.7z {d}'.format(fn=folderName[1:-1],p=password,d=source))
-#'''
         if re.search('.*encrypted.*',destination):
             try:
-                #os.system('cd {d}'.format(dest=destination))
                 print('FOLDER NAME IS '+folderName)
                 print('\nCREATING ARCHIVE')
                 os.system('7za a -mhe=on -p{p} {fn}.7z {d}'.format(fn=folderName,p=password,d=source))
@@ -33,11 +29,8 @@ for source in backupSources:
                 os.system('mkdir {d}\{fn}"'.format(fn=folderName,d=destination[:-1]))
                 print('\nCOPYING ARCHIVE TO NEW DIRECTORY')
                 os.system('copy {fn}.7z {d}\{fn}"'.format(fn=folderName,d=destination[:-1]))
-                #print('COPY COMMAND IS '+'copy {fn}.7z {d}\{fn}"'.format(fn=folderName,d=destination[:-1]))
                 print('\nREMOVING SOURCE ARCHIVE')
                 os.system('del {fn}.7z'.format(fn=folderName))
-                #print('DEL COMMAND IS '+'del {fn}.7z'.format(fn=folderName))
-                #print('ROBOCOPY COMMAND IS '+'robocopy {bs} {rco} {bl}\{fn}"'.format(bs=source,rco=roboCopyOptions,bl=destination[:-1],fn=folderName))
                 successMessage+='>"{s}" has been successfully backed up securely to {b}\n'.format(s=folderName,b=destination)
             except:
                 successMessage+='>"{s}" back up to {b} has failed\n'.format(s=folderName,b=destination)
@@ -49,5 +42,4 @@ for source in backupSources:
             except:
                 successMessage+='>"{s}" back up to {b} has failed\n'.format(s=folderName,b=destination)
                 pass
-#'''
 print(successMessage)
