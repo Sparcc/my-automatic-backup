@@ -13,14 +13,20 @@ config.read('backup.ini')
 backupSources = config['DEFAULT']['backupSources'].split(",")
 backupdDestinations = config['DEFAULT']['backupDestinations'].split(",")
 roboCopyOptions = config['DEFAULT']['roboCopyOptions'][1:-1]
-password = config['DEFAULT']['encryptionKey']
-password = password.lower()
-if password == 'not_set' or password == 'none' or password == 'null':
+passwordExists = config['DEFAULT']['encryptionKey']
+passwordExists = passwordExists.lower()
+password = 'password'
+if passwordExists == 'not_set' or passwordExists == 'none' or passwordExists == 'null':
     password=generatePassHash()
     print('STORING PASSWORD')
-    config['DEFAULT']['encryptionKey'] = password
+    config['DEFAULT']['encryptionKey'] = 'SET'
+    f = open('key','w')
+    f.write(password)
     with open('backup.ini', 'w') as configfile:
         config.write(configfile)
+elif passwordExists.lower() == 'set':
+    f = open('key','r')
+    password = f.read()
 successMessage=''
 for source in backupSources:
     source = source.strip()
