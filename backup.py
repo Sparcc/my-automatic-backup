@@ -14,10 +14,13 @@ backupSources = config['DEFAULT']['backupSources'].split(",")
 backupdDestinations = config['DEFAULT']['backupDestinations'].split(",")
 roboCopyOptions = config['DEFAULT']['roboCopyOptions'][1:-1]
 password = config['DEFAULT']['encryptionKey']
-if password == 'NOT_SET':
+password = password.lower()
+if password == 'not_set' or password == 'none' or password == 'null':
     password=generatePassHash()
     print('STORING PASSWORD')
     config['DEFAULT']['encryptionKey'] = password
+    with open('backup.ini', 'w') as configfile:
+        config.write(configfile)
 successMessage=''
 for source in backupSources:
     source = source.strip()
@@ -30,13 +33,11 @@ for source in backupSources:
             if match: #if extraction successful
                 if os.path.exists(match.groups()[0]): #if the drive letter exists then build archive
                     unencryptedBackup = False #dont do the other unencrypted backup type
-                    config2 = configparser.ConfigParser()
-                    config2.read('decrypt.ini')
-                    #TODO: FIX THIS JUNK
-                    config2['DEFAULT']['fileName'] = '"'+folderName+'"'
-                        with open('config.ini', 'w') as configfile:
-                        defaultConfig = configparser.ConfigParser()
-                            defaultConfig.write(configfile)
+                    configDecrypt = configparser.ConfigParser()
+                    configDecrypt.read('decrypt.ini')
+                    configDecrypt['DEFAULT']['fileName'] = '"'+folderName+'"'
+                    with open('decrypt.ini', 'w') as configfile:
+                        configDecrypt.write(configfile)
                     try:
                         print('FOLDER NAME IS '+folderName)
                         print('\nCREATING ARCHIVE')
