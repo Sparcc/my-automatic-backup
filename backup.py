@@ -27,7 +27,7 @@ if passwordExists == 'not_set' or passwordExists == 'none' or passwordExists == 
 elif passwordExists.lower() == 'set':
     f = open('key','r')
     password = f.read()
-successMessage=''
+    successMessage=''
 for source in backupSources:
     source = source.strip()
     for destination in backupdDestinations:
