@@ -1,8 +1,8 @@
-import backupUtils
+import sys,os
+sys.path.append(os.getcwd())
+from BackupUtils import *
 
-def _generatePassHash():
-    temp = getpass.getpass().encode('utf-8')
-    return hashlib.sha224(temp).hexdigest()
+
 cwd = os.getcwd()
 sys.path.append(cwd)
 config = configparser.ConfigParser()
@@ -12,12 +12,12 @@ backupdDestinations = config['DEFAULT']['backupDestinations'].split(",")
 roboCopyOptions = config['DEFAULT']['roboCopyOptions'][1:-1]
 passwordExists = config['DEFAULT']['encryptionKey']
 passwordExists = passwordExists.lower()
-password = _createPassword(passwordExists, config)
+password = createPassword(passwordExists, config)
 
 for source in backupSources:
     source = source.strip()
 
     for destination in backupdDestinations:
         destination = destination.strip()
-        logging += _backupSourceToDestination(source,destination,password)
+        logging = backupSourceToDestination(source, destination, password, roboCopyOptions)
         print(logging)
