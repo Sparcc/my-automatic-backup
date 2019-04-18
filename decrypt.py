@@ -11,4 +11,6 @@ def generatePassHash():
 
 password = generatePassHash()
 fileName = config['DEFAULT']['fileName']
+# Not a typo: password is set: -p<password>
+# https://sevenzip.osdn.jp/chm/cmdline/commands/extract_full.htm
 os.system('7za x -p{p} {fn}.7z'.format(fn=fileName,p=password))
