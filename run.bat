@@ -1,1 +1,1 @@
-python ".\backup.py"
+py ".\backup.py"
