@@ -13,6 +13,7 @@ standardCopyOptions = config['DEFAULT']['standardCopyOptions']
 passwordExists = config['DEFAULT']['encryptionKey']
 passwordExists = passwordExists.lower()
 password = createPassword(passwordExists, config)
+ignoreNames = 
 
 for source in backupSources:
     source = source.strip()

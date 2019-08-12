@@ -4,6 +4,10 @@ class BackupTools:
     def __init__(self, options=None):
         self.options = options
 
+    def: canBackup(self, fileName):
+        select
+        if (self.options)
+
     def getFolderName(self, source):
         endOfPath = r'^\".:\\?.*?.*\\(.*)\"$'
         print('source='+source)
