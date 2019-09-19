@@ -7,6 +7,25 @@ import getpass
 from BackupTools import *
 backupTools = BackupTools()
 
+def _canSkip(folderName, folderIgnorePatterns):
+    print('*********starting logging _canSkip************')
+    print(folderName)
+    print(folderIgnorePatterns)
+    print('*********finished logging _canSkip************')
+
+    #'''
+    for ignorePat in folderIgnorePatterns:
+        
+        sr = re.search(ignorePat, folderName)
+        # Ensure full match of pattern
+        if (sr and len(sr[0]) == len(folderName)):
+            print(folderName+' VS '+ignorePat+'=pass')
+            print('group match='+sr[0])
+            print('ignoring '+folderName)
+            return True
+
+    #'''
+    return False
 
 def _generatePassHash():
     temp = getpass.getpass().encode('utf-8')
@@ -61,11 +80,18 @@ password - used to encrypt
 '''
 
 
-def backupSourceToDestination(source, destination, password=None, standardCopyOptions=None, encryptedCopyOptions=None):
+def backupSourceToDestination(
+    source, 
+    destination, 
+    password=None, 
+    standardCopyOptions=None, 
+    encryptedCopyOptions=None, 
+    folderIgnorePatterns=None
+    ):
     # Build folder name automaticalyl with source name if no folder exists in destination for use later on
     logging = ''
     # Encryption backup
-
+    folderName = backupTools.getFolderName(source)
     if (re.search('.*encrypted.*', destination) and password is not None):  # IF encryption is needed
         # extract drive letter of destination
         match = re.search('([A-Z]:)', destination)
@@ -73,7 +99,13 @@ def backupSourceToDestination(source, destination, password=None, standardCopyOp
         if match and os.path.exists(match.groups()[0]):
             configDecrypt = configparser.ConfigParser()
             configDecrypt.read('decrypt.ini')
-            fileName = backupTools.getFolderName(source)
+
+            print(folderIgnorePatterns)
+            if folderIgnorePatterns:
+                if _canSkip(folderName, folderIgnorePatterns):
+                    return ('Ignoring' +source+ ' to ' +destination)
+                
+            fileName = folderName
             configDecrypt['DEFAULT']['fileName'] = '"'+fileName+'"'
             with open('decrypt.ini', 'w') as configfile:
                 configDecrypt.write(configfile)
@@ -81,6 +113,14 @@ def backupSourceToDestination(source, destination, password=None, standardCopyOp
                 source, destination, password)
     # Standard backup
     else:
+        #print('ignorePatterns='+ignorePatterns)
+        #'''
+        if folderIgnorePatterns:
+            if _canSkip(folderName, folderIgnorePatterns):
+                
+                return 'skipping'
+                #return ('Ignoring' +source+ ' to ' +destination)
+        #'''
         logging = backupTools.doStandardBackup(
             source, destination, standardCopyOptions)
 

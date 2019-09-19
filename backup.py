@@ -1,6 +1,7 @@
 from BackupUtils import *
 import sys
 import os
+import re
 sys.path.append(os.getcwd())
 
 
@@ -23,8 +24,9 @@ for destination in backupdDestinations:
 password = ''
 if encryptedBackupEnabled:
     password = createPassword(passwordExists, config)
-    
-ignoreNames = config['DEFAULT']['ignore']
+
+#TODO: Make this actually useful - Currently only works for parent folders
+folderIgnorePatterns = config['DEFAULT']['folderIgnorePatterns'][1:-1].split(",")
 for source in backupSources:
     source = source.strip()
     print('processing source ' + source)
@@ -32,5 +34,11 @@ for source in backupSources:
         print('processing destination ' + destination)
         destination = destination.strip()
         logging = backupSourceToDestination(
-            source, destination, password, standardCopyOptions)
+            source,
+            destination,
+            password,
+            standardCopyOptions,
+            encryptedCopyOptions=None,
+            folderIgnorePatterns=folderIgnorePatterns
+        )
         print(logging)

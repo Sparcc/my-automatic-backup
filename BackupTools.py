@@ -5,7 +5,7 @@ class BackupTools:
         self.options = options
 
     def canBackup(self, fileName):
-        if (self.options): return true
+        if (self.options): return True
 
     def getFolderName(self, source):
         endOfPath = r'^\".:\\?.*?.*\\(.*)\"$'
