@@ -4,16 +4,14 @@ class BackupTools:
     def __init__(self, options=None):
         self.options = options
 
-    def: canBackup(self, fileName):
-        select
-        if (self.options)
+    def canBackup(self, fileName):
+        if (self.options): return true
 
     def getFolderName(self, source):
         endOfPath = r'^\".:\\?.*?.*\\(.*)\"$'
         print('source='+source)
         folderName=re.search(endOfPath,source).groups()[0]
         return folderName
-        
 
     def doEncryptedBackup(self, source, destination, password, options=None):
         logging = ''

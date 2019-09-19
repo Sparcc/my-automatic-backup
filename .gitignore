@@ -60,3 +60,5 @@ target/
 *.7z
 
 key
+
+myfile\.dat
