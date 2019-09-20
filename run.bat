@@ -1,1 +1,1 @@
-python ".\backup.py"
+pipenv run python .\backup.py
